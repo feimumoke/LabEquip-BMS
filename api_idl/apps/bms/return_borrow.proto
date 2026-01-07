@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+option go_package = "github.com/feimumoke/labequipbms/api_idl/apps/bms/pbbms";
+package pbbms;
+
+// POST
+message ReturnBorrowRequest{
+  required string equip_id = 1;
+  required string lab_id = 2;
+  required string description = 3;
+  required int64  count = 4;
+}
+
+message ReturnBorrowResponse{
+}

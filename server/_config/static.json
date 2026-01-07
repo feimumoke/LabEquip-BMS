@@ -1,0 +1,66 @@
+{
+  "product_category": {
+    "手机": [
+      {
+        "id": 1,
+        "category": "荣耀"
+      },
+      {
+        "id": 2,
+        "category": "华为"
+      },
+      {
+        "id": 3,
+        "category": "苹果"
+      },
+      {
+        "id": 4,
+        "category": "小米"
+      },
+      {
+        "id": 5,
+        "category": "vivo"
+      },
+      {
+        "id": 6,
+        "category": "海信"
+      },
+      {
+        "id": 7,
+        "category": "三星"
+      }
+    ],
+    "衣服": [
+      {
+        "id": 8,
+        "category": "男鞋"
+      },
+      {
+        "id": 9,
+        "category": "裙子"
+      },
+      {
+        "id": 10,
+        "category": "西装"
+      },
+      {
+        "id": 11,
+        "category": "裤子"
+      },
+      {
+        "id": 12,
+        "category": "羽绒服"
+      },
+      {
+        "id": 13,
+        "category": "衬衫"
+      }
+    ],
+    "其他": [
+      {
+        "id": 14,
+        "category": "其他"
+      }
+    ]
+  }
+}

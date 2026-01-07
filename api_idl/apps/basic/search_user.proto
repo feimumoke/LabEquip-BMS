@@ -1,0 +1,25 @@
+syntax = "proto2";
+
+option go_package = "github.com/feimumoke/labequipbms/api_idl/apps/basic/pbbasic";
+package pbbasic;
+
+// POST
+message SearchUserRequest{
+  optional string search_key = 1;
+}
+
+message SearchUserResponse{
+  optional int64 total = 1;
+  required UserInfo list = 2;
+}
+
+message UserInfo {
+  optional string user_id = 1;
+  optional string user_name = 2;
+  optional int64 role = 3;
+  optional string avatar = 4;
+  optional string phone = 5;
+  optional string email = 6;
+  optional int64 ctime = 7;
+  optional int64 gender = 8;
+}

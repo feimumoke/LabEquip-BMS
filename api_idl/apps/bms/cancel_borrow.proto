@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+option go_package = "github.com/feimumoke/labequipbms/api_idl/apps/bms/pbbms";
+package pbbms;
+
+// POST
+message CancelBorrowRequest{
+  required string borrow_id = 1;
+  optional string reason = 2;
+}
+
+message CancelBorrowResponse{
+}

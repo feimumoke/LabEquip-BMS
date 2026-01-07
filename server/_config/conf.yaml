@@ -1,0 +1,146 @@
+---
+
+server:
+  addr:
+    api: "0.0.0.0:8080"
+    admin: "0.0.0.0:8082"
+    cron: "0.0.0.0:8086"
+
+datasource:
+  default: #--task process
+    driver: mysql
+    maxOpenConns: 200
+    connMaxLifetime: 3600
+    maxIdleConns: 10
+    autoReport: true
+    groups:
+      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_process_db_1"
+        replicasDsn:
+          - "root:123456@(127.0.0.1:3306)/wc_process_db_1"
+      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_process_db_2"
+        replicasDsn:
+          - "root:123456@(127.0.0.1:3306)/wc_process_db_2"
+      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_process_db_3"
+        replicasDsn:
+          - "root:123456@(127.0.0.1:3306)/wc_process_db_3"
+  inventory:
+    driver: mysql
+    maxOpenConns: 200
+    connMaxLifetime: 3600
+    maxIdleConns: 10
+    autoReport: true
+    groups:
+      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_inventory_db_1"
+        replicasDsn:
+          - "root:123456@(127.0.0.1:3306)/wc_inventory_db_1"
+      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_inventory_db_2"
+        replicasDsn:
+          - "root:123456@(127.0.0.1:3306)/wc_inventory_db_2"
+      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_inventory_db_3"
+        replicasDsn:
+          - "root:123456@(127.0.0.1:3306)/wc_inventory_db_3"
+  order:
+    driver: mysql
+    maxOpenConns: 200
+    connMaxLifetime: 3600
+    maxIdleConns: 10
+    autoReport: true
+    groups:
+      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_order_db_1"
+        replicasDsn:
+          - "root:123456@(127.0.0.1:3306)/wc_order_db_1"
+      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_order_db_2"
+        replicasDsn:
+          - "root:123456@(127.0.0.1:3306)/wc_order_db_2"
+  basic:
+    driver: mysql
+    maxOpenConns: 100
+    connMaxLifetime: 3600
+    maxIdleConns: 10
+    autoReport: true
+    groups:
+      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_basic_db"
+        replicasDsn:
+          - "root:123456@(127.0.0.1:3306)/wc_basic_db"
+  message:
+    driver: mysql
+    maxOpenConns: 100
+    connMaxLifetime: 3600
+    maxIdleConns: 10
+    autoReport: true
+    groups:
+      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_message_db"
+        replicasDsn:
+          - "root:123456@(127.0.0.1:3306)/wc_message_db"
+
+
+
+
+
+kafka:
+  ConsumerList:
+    - FromSystem: "scbs"
+      Brokers:
+        - "kafka-ssc-live-01.ctl.i.sz.shopee.io:9092"
+        - "kafka-ssc-live-02.ctl.i.sz.shopee.io:9092"
+        - "kafka-ssc-live-03.ctl.i.sz.shopee.io:9092"
+      ConsumerGroup: "wc_v2"
+  ProducerList:
+    - ToSystem: "data"
+      Brokers:
+        - "kafka-ssc-live-01.sg9.i.sz.shopee.io:9092"
+        - "kafka-ssc-live-02.sg9.i.sz.shopee.io:9092"
+        - "kafka-ssc-live-03.sg9.i.sz.shopee.io:9092"
+      Topics:
+        - TopicName: "supplychain-wc-transaction-live-sg"
+          TopicAlias: "wc_transaction_topic"
+        - TopicName: "wc_order_recommend_box_live"
+          TopicAlias: "wc_order_recommend_box_topic"
+        - TopicName: "supplychain-wc-sync-transaction-live"
+          TopicAlias: "wc_sync_transaction_topic"
+        - TopicName: "wc_sync_data_to_data_live"
+          TopicAlias: "wc_sync_data_to_data_topic"
+    - ToSystem: "scbs"
+      Brokers:
+        - "kafka-ssc-live-01.sg9.i.sz.shopee.io:9092"
+        - "kafka-ssc-live-02.sg9.i.sz.shopee.io:9092"
+        - "kafka-ssc-live-03.sg9.i.sz.shopee.io:9092"
+      Topics:
+        - TopicName: "wc_sku_update_topic"
+          TopicAlias: "wc_sku_update_topic"
+    - ToSystem: "monitor"
+      Brokers:
+        - "kafka-ssc-live-01.sg9.i.sz.shopee.io:9092"
+        - "kafka-ssc-live-02.sg9.i.sz.shopee.io:9092"
+        - "kafka-ssc-live-03.sg9.i.sz.shopee.io:9092"
+      Topics:
+        - TopicName: "supplychain-wc-monitor-live-sg"
+          TopicAlias: "wc_monitor_topic"
+
+es:
+  ESClusterList:
+    - Name: "wc-sku-basic"
+      URL: "http://search.es.ssc-wc-sku-basic.i.sz.shopee.io:9202"
+  ESIndexList:
+    - Dimension: "SKULocation"
+      IndexName: "sku_location_stockv3"
+    - Dimension: "SKULocationBlockType"
+      IndexName: "sku_location_block_type_stockv3"
+    - Dimension: "SKULocationBatch"
+      IndexName: "sku_location_batch_stockv3"
+
+cache:
+  default:
+    type: redis
+    maxIdleConns: 10
+    maxActiveConns: 100
+    address: "redis://:GxSCpYsrP!DTGH6e@proxy.cache-codis3-ctl.i.sz.shopee.io:8162/0"
+
+
+jwtconfig:
+  - account: "supplier"
+    ak: "hfjjfkskjhfkk"
+    sk: "supplier-test"
+  - account: "merchant"
+    ak: "fhjskdlkksdkl"
+    sk: "merchat-test"

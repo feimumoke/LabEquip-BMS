@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+option go_package = "github.com/feimumoke/labequipbms/api_idl/apps/basic/pbbasic";
+package pbbasic;
+
+// POST
+message UserLoginRequest{
+  required int64 client_type = 1;
+  required string code = 2;
+  required string passwd = 3;
+}
+
+
+
+message UserLoginResponse{
+  required int64 login_status = 1;
+  required string user_name = 2;
+}
+

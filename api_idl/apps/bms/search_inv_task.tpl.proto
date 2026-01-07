@@ -1,0 +1,37 @@
+syntax = "proto2";
+
+option go_package = "github.com/feimumoke/labequipbms/api_idl/apps/bms/pbbms";
+package pbbms;
+
+// POST
+message SearchInvTaskRequest{
+  optional string lab_code = 1;
+  optional string equip_id = 2;
+}
+
+message SearchInvTaskResponse{
+  optional int64 total = 1;
+  required InvTaskInfo list = 2;
+}
+
+message InvTaskInfo {
+  required string task_id = 11;
+  required string equip_id = 1;
+  repeated string equip_name = 2;
+  optional string lab_code = 3;
+  optional string lab_name = 4;
+  optional int64 total_qty = 5;
+  optional int64 available_qty = 6;
+  optional int64 borrowed_qty = 7;
+  optional int64 pre_allocated_qty = 8;
+  optional int64 reserved_qty = 9;
+  repeated InvTaskLog log_list = 10;
+}
+
+message InvTaskLog {
+  optional int64 task_status = 1;
+  required string operator = 2;
+  required string message = 3;
+  required string info = 5;
+  optional int64 ctime = 4;
+}

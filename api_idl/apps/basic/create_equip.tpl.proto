@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+option go_package = "github.com/feimumoke/labequipbms/api_idl/apps/basic/pbbasic";
+package pbbasic;
+
+// POST
+message CreateEquipRequest{
+  required int64 category_id = 1;
+  required string equip_name = 2;
+  required string  description = 3;
+}
+
+message CreateEquipResponse{
+  required string equip_id = 1;
+}

@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+option go_package = "github.com/feimumoke/labequipbms/api_idl/apps/basic/pbbasic";
+package pbbasic;
+
+// POST
+message CreateUserRequest{
+  required int64 gender = 1;
+  required string name = 2;
+  required string  password = 3;
+  required int64 role = 4;
+
+  required string  phone = 5;
+  required string  email = 6;
+  required string  introduce = 7;
+}
+
+message CreateUserResponse{
+  required string user_id = 1;
+}
