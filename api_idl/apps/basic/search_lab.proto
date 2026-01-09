@@ -5,11 +5,15 @@ package pbbasic;
 
 // POST
 message SearchLabRequest{
+  // 分页，第几页
+  optional int64 pageno = 2 [default = 1];
+  // 分页，单页数量
+  optional int64 count = 3 [default = 20];
 }
 
 message SearchLabResponse{
   optional int64 total = 1;
-  required LabInfo list = 2;
+  repeated LabInfo list = 2;
 }
 
 message LabInfo {

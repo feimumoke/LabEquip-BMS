@@ -5,10 +5,9 @@ package pbbms;
 
 // POST
 message ReturnBorrowRequest{
-  required string equip_id = 1;
-  required string lab_id = 2;
-  required string description = 3;
-  required int64  count = 4;
+  required string borrow_id = 1;
+  required int64  return_qty = 2;
+  repeated string code_list = 3;
 }
 
 message ReturnBorrowResponse{

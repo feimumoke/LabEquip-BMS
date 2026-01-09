@@ -1,13 +1,14 @@
 package excel
 
 import (
-	"github.com/feimumoke/wechating/apps/entity"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/support/convert"
-	"github.com/feimumoke/wechating/framework/wcerror"
-	"github.com/xuri/excelize/v2"
 	"io/ioutil"
 	"time"
+
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/defines/entity"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/support/convert"
+	"github.com/xuri/excelize/v2"
 )
 
 type ExcelHeaderField struct {

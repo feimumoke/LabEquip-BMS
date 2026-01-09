@@ -20,24 +20,23 @@ func GenEquipNumber(ctx context.Context) (string, *bmserror.BMSError) {
 	return fmt.Sprintf("%s%05d", constant.DistributedIDTypePerfixMap[constant.EquipID], id), nil
 }
 
-func GenBorrowTaskId(ctx context.Context, ptId string) (string, *bmserror.BMSError) {
-	period, num, err := DailyIDCreator.GetDatePeriodID(ctx, constant.BorrowTaskID, ptId)
+func GenBorrowTaskId(ctx context.Context) (string, *bmserror.BMSError) {
+	period, num, err := DailyIDCreator.GetDatePeriodID(ctx, constant.BorrowTaskID, ALLPointType)
 	if err != nil {
 		return "", err.Mark()
 	}
 	newPeriod := strconv.FormatInt(period, 10)[2:]
 	newNum := ConvertToNewGenerationIDWithBit(num, 4)
-	newPtID := GetNewPtID(ptId)
-	inboundID := fmt.Sprintf("%s%s%s%s", constant.DistributedIDTypePerfixMap[constant.BorrowTaskID], newPtID, newPeriod, newNum)
+	inboundID := fmt.Sprintf("%s%s%s", constant.DistributedIDTypePerfixMap[constant.BorrowTaskID], newPeriod, newNum)
 	return inboundID, nil
 }
 
-func GenerateTaskNumber(ctx context.Context, ptId string, idType constant.DistributedIDType) (string, *bmserror.BMSError) {
-	period, idOffset, err := DailyIDCreator.GetBaseDatePeriodID(ctx, timeutil.TodayDateStr(timeutil.DateIntFormatYYMMDD), idType, ptId)
+func GenerateTaskNumber(ctx context.Context, idType constant.DistributedIDType) (string, *bmserror.BMSError) {
+	period, idOffset, err := DailyIDCreator.GetBaseDatePeriodID(ctx, timeutil.TodayDateStr(timeutil.DateIntFormatYYMMDD), idType, ALLPointType)
 	if err != nil {
 		return "", err.Mark()
 	}
-	return fmt.Sprintf("%s%s%d%s", constant.DistributedIDTypePerfixMap[idType], GetNewPtID(ptId), period, ConvertToNewGenerationIDWithBit(idOffset, 4)), nil
+	return fmt.Sprintf("%s%d%s", constant.DistributedIDTypePerfixMap[idType], period, ConvertToNewGenerationIDWithBit(idOffset, 4)), nil
 }
 
 func GenUserNo(ctx context.Context) (string, *bmserror.BMSError) {
@@ -49,17 +48,17 @@ func GenUserNo(ctx context.Context) (string, *bmserror.BMSError) {
 	return paddingNumStr, nil
 }
 
-func GenerateTransactionID(ctx context.Context, ptId string) (int64, *bmserror.BMSError) {
-	period, num, wcErr := DailyIDCreator.GetDatePeriodID(ctx, constant.TransactionID, ptId)
+func GenerateTransactionID(ctx context.Context) (string, *bmserror.BMSError) {
+	period, num, wcErr := DailyIDCreator.GetDatePeriodID(ctx, constant.TransactionID, ALLPointType)
 	if wcErr != nil {
-		return 0, wcErr.Mark()
+		return "", wcErr.Mark()
 	}
 	idStr := fmt.Sprintf("%v%v%08d", period, 0, num)
 	id, convertErr := convert.StringToInt64(idStr)
 	if convertErr != nil {
-		return 0, bmserror.NewError(constant.ErrInternalServer, convertErr.Error())
+		return "", bmserror.NewError(constant.ErrInternalServer, convertErr.Error())
 	}
-	return id, nil
+	return convert.Int64ToString(id), nil
 }
 
 const ALLPointType = "ALL"

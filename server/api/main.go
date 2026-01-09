@@ -10,7 +10,6 @@ import (
 	"github.com/feimumoke/labequipbms/framework/config"
 	"github.com/feimumoke/labequipbms/framework/crontask"
 	"github.com/feimumoke/labequipbms/framework/initialize"
-	"github.com/feimumoke/labequipbms/framework/libinit"
 	"github.com/feimumoke/labequipbms/framework/web"
 )
 
@@ -31,7 +30,6 @@ func main() {
 		panic(wcError)
 	}
 
-	libinit.Init()
 	cornRunner := crontask.NewCornRunner()
 	r := asynctask.InitAsyncRunnerInProcess(cornRunner)
 	s := web.NewBasicServer(config.WCConfig.Server, "api")

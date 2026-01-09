@@ -28,7 +28,8 @@ type Header struct {
 	Region     string `header:"region"`
 	UserID     string `header:"user_id"`
 	UserEmail  string
-	SupplierID int64 `header:"supplier_id"`
+	SupplierID int64  `header:"supplier_id"`
+	ClientIP   string `header:"client_ip"`
 }
 
 type Response struct {

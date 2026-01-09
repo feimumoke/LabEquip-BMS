@@ -6,8 +6,9 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 	"encoding/json"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/wcerror"
+
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
 )
 
 // 返回一个32位md5加密后的字符串

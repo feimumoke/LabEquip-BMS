@@ -9,6 +9,9 @@ message CreateBorrowRequest{
   required string lab_id = 2;
   required string description = 3;
   required int64  count = 4;
+  repeated string code_list = 5;
+  //0 预约 1 直接拿走
+  optional int64 borrow_type = 8;
 }
 
 message CreateBorrowResponse{

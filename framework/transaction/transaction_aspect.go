@@ -2,11 +2,13 @@ package transaction
 
 import (
 	"context"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/log"
-	"github.com/feimumoke/wechating/framework/support/monitor"
-	"github.com/feimumoke/wechating/framework/wcerror"
+
 	"runtime/debug"
+
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/log"
+	"github.com/feimumoke/labequipbms/framework/support/monitor"
 )
 
 type TxAdvice interface {

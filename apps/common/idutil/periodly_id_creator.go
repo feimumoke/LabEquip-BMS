@@ -97,16 +97,8 @@ func (d *DistributedDailyIDCreator) GenerateCommonOrderId(ctx context.Context, p
 	}
 	newDatePeriod := strconv.FormatInt(datePeriod, 10)[2:]
 	newRet := ConvertToNewGenerationIDWithBit(ret, 4)
-	newptId := GetNewPtID(ptId)
-	taskId := fmt.Sprintf("%s%s%s%s", prefix, newptId, newDatePeriod, newRet)
+	taskId := fmt.Sprintf("%s%s%s", prefix, newDatePeriod, newRet)
 	return taskId, nil
-}
-
-func GetNewPtID(ptId string) string {
-	if len(ptId) == 3 {
-		return ptId + "000"
-	}
-	return ptId
 }
 
 /*

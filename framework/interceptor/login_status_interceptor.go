@@ -2,24 +2,25 @@ package interceptor
 
 import (
 	"context"
-	"github.com/feimumoke/wechating/apps/basic/manager/muser"
-	"github.com/feimumoke/wechating/apps/entity"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/log"
-	"github.com/feimumoke/wechating/framework/wcerror"
-	"github.com/feimumoke/wechating/framework/web"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/feimumoke/labequipbms/apps/basic/manager"
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/defines/entity"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/log"
+	"github.com/feimumoke/labequipbms/framework/web"
+	"github.com/gin-gonic/gin"
 )
 
 type LoginStatusInterceptor struct {
-	userMng *muser.UserManager
+	userMng *manager.UserManager
 }
 
 func NewLoginStatusInterceptor() *LoginStatusInterceptor {
 	return &LoginStatusInterceptor{
-		userMng: muser.NewUserManager(),
+		userMng: manager.NewUserManager(),
 	}
 }
 

@@ -3,11 +3,12 @@ package util
 import (
 	"archive/zip"
 	"encoding/json"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/log"
-	"github.com/feimumoke/wechating/framework/wcerror"
 	"io"
 	"os"
+
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/log"
 )
 
 func GetPageOffset(pageNo int64, count int64) int64 {

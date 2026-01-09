@@ -3,21 +3,22 @@ package crontask
 import (
 	"context"
 	"fmt"
-	"github.com/feimumoke/wechating/framework/appcontext"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/log"
-	"github.com/feimumoke/wechating/framework/support/convert"
-	"github.com/feimumoke/wechating/framework/support/hostutil"
-	"github.com/feimumoke/wechating/framework/support/monitor"
-	"github.com/feimumoke/wechating/framework/support/trace"
-	"github.com/feimumoke/wechating/framework/wcerror"
-	"github.com/robfig/cron"
 	"reflect"
 	"runtime"
 	"runtime/debug"
 	"strings"
 	"sync"
 	"sync/atomic"
+
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/framework/appcontext"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/log"
+	"github.com/feimumoke/labequipbms/framework/support/convert"
+	"github.com/feimumoke/labequipbms/framework/support/hostutil"
+	"github.com/feimumoke/labequipbms/framework/support/monitor"
+	"github.com/feimumoke/labequipbms/framework/support/trace"
+	"github.com/robfig/cron"
 )
 
 var globalWaveCronInProcessTaskMap = make(map[string]*CronInProcessTask)

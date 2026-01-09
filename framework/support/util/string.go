@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/wcerror"
 	"math"
 	"math/rand"
 	"regexp"
@@ -13,6 +11,9 @@ import (
 	"strings"
 	"time"
 	"unicode"
+
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
 )
 
 // 向右补充0 对标python zfill函数

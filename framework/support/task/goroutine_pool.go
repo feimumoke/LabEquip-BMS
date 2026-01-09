@@ -2,13 +2,14 @@ package task
 
 import (
 	"context"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/log"
-	"github.com/feimumoke/wechating/framework/support/trace"
-	"github.com/feimumoke/wechating/framework/wcerror"
-	"github.com/panjf2000/ants/v2"
 	"runtime/debug"
 	"time"
+
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/log"
+	"github.com/feimumoke/labequipbms/framework/support/trace"
+	"github.com/panjf2000/ants/v2"
 )
 
 // 线程池

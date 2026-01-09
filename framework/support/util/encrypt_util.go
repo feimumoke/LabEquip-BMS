@@ -6,9 +6,10 @@ import (
 	"crypto/cipher"
 	"encoding/base64"
 	"encoding/gob"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/wcerror"
 	"sync"
+
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
 )
 
 func init() {

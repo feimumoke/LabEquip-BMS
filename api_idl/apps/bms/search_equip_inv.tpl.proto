@@ -7,11 +7,16 @@ package pbbms;
 message SearchEquipRequest{
   optional string lab_code = 1;
   optional string equip_id = 2;
+
+  // 分页，第几页
+  optional int64 pageno = 10 [default = 1];
+  // 分页，单页数量
+  optional int64 count = 11 [default = 20];
 }
 
 message SearchEquipResponse{
   optional int64 total = 1;
-  required EquipInvInfo list = 2;
+  repeated EquipInvInfo list = 2;
 }
 
 message EquipInvInfo {

@@ -3,11 +3,12 @@ package crontask
 import (
 	"context"
 	"encoding/json"
-	"github.com/feimumoke/wechating/framework/appcontext"
-	"github.com/feimumoke/wechating/framework/log"
-	"github.com/feimumoke/wechating/framework/wcerror"
 	"reflect"
 	"runtime/debug"
+
+	"github.com/feimumoke/labequipbms/framework/appcontext"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/log"
 )
 
 type CornRunner struct {

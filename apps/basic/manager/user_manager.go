@@ -9,7 +9,9 @@ import (
 	"github.com/feimumoke/labequipbms/defines/entity"
 	"github.com/feimumoke/labequipbms/framework/bmserror"
 	"github.com/feimumoke/labequipbms/framework/datasource"
+	"github.com/feimumoke/labequipbms/framework/support/paginator"
 	"github.com/feimumoke/labequipbms/framework/support/timeutil"
+	"github.com/feimumoke/labequipbms/framework/support/util"
 )
 
 type UserManager struct {
@@ -68,4 +70,69 @@ func (u *UserManager) GetValidLoginSessionBySessionID(ctx context.Context, sessi
 		return nil, nil
 	}
 	return loginSessionList[0], nil
+}
+
+func (u *UserManager) CreateUser(ctx context.Context, user *entity.UserTab) *bmserror.BMSError {
+	if err := u.ds.GetDataSource(ctx, nil).Table(entity.UserTabName).Create(user).GetError(); err != nil {
+		return err.Mark()
+	}
+	return nil
+}
+
+type UserSearchParam struct {
+	SearchKey string `json:"search_key"`
+	PageIn    *paginator.PageIn
+}
+
+func (u *UserManager) SearchUserMng(ctx context.Context, params *UserSearchParam) ([]*entity.UserTab, int64, *bmserror.BMSError) {
+	var userList []*entity.UserTab
+	db := u.ds.GetDataSource(ctx, nil).Table(entity.UserTabName)
+	if params.SearchKey != "" {
+		db = db.Where("name LIKE ? OR email LIKE ? OR phone LIKE ?", "%"+params.SearchKey+"%", "%"+params.SearchKey+"%", "%"+params.SearchKey+"%")
+	}
+	total, err := paginator.Paginator(db, params.PageIn, &userList)
+	if err != nil {
+		return nil, 0, err.Mark()
+	}
+	return userList, total, nil
+}
+
+func (u *UserManager) GetUserByCode(ctx context.Context, code string) (*entity.UserTab, *bmserror.BMSError) {
+	var user entity.UserTab
+	db := u.ds.GetDataSource(ctx, nil).Table(entity.UserTabName).Where("email = ? OR phone = ?", code, code).First(&user)
+	if db.RecordNotFound() {
+		return nil, nil
+	}
+	if err := db.GetError(); err != nil {
+		return nil, err.Mark()
+	}
+	return &user, nil
+}
+
+func (u *UserManager) GetUserByEmail(ctx context.Context, email string) (*entity.UserTab, *bmserror.BMSError) {
+	var user entity.UserTab
+	db := u.ds.GetDataSource(ctx, nil).Table(entity.UserTabName).Where("email = ?", email).First(&user)
+	if db.RecordNotFound() {
+		return nil, nil
+	}
+	if err := db.GetError(); err != nil {
+		return nil, err.Mark()
+	}
+	return &user, nil
+}
+
+func HashPassword(password, salt string) (string, *bmserror.BMSError) {
+	hashStr := password + salt
+	hash, err := util.GetMD5Encode(hashStr)
+	if err != nil {
+		return "", err.Mark()
+	}
+	return hash, nil
+}
+
+func (u *UserManager) CreateLoginSession(ctx context.Context, session *entity.LoginSession) *bmserror.BMSError {
+	if err := u.ds.GetDataSource(ctx, nil).Table(entity.LoginSessionTabTableName).Create(session).GetError(); err != nil {
+		return err.Mark()
+	}
+	return nil
 }

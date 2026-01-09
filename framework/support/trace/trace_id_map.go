@@ -1,8 +1,9 @@
 package trace
 
 import (
-	"github.com/sillyousu/goid"
 	"sync"
+
+	"github.com/petermattis/goid"
 )
 
 var (
@@ -13,7 +14,7 @@ var (
 func setLogTraceID(logid string) {
 	if gLogIDMap != nil {
 		gLogIDMapLock.Lock()
-		goroutineId := goid.Goid()
+		goroutineId := goid.Get()
 		gLogIDMap[goroutineId] = logid
 		gLogIDMapLock.Unlock()
 	}
@@ -22,7 +23,7 @@ func setLogTraceID(logid string) {
 func unsetTraceID() {
 	if gLogIDMap != nil {
 		gLogIDMapLock.Lock()
-		delete(gLogIDMap, goid.Goid())
+		delete(gLogIDMap, goid.Get())
 		gLogIDMapLock.Unlock()
 	}
 }
@@ -31,7 +32,7 @@ func getTraceIDFromLocalMap() (string, bool) {
 	var traceID string
 	var ok bool
 
-	goroutineId := goid.Goid()
+	goroutineId := goid.Get()
 	if gLogIDMap != nil {
 		gLogIDMapLock.RLock()
 		traceID, ok = gLogIDMap[goroutineId]

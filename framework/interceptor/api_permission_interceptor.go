@@ -2,13 +2,14 @@ package interceptor
 
 import (
 	"context"
-	"github.com/feimumoke/wechating/apps/basic/manager/muser"
-	"github.com/feimumoke/wechating/framework/appcontext"
-	"github.com/feimumoke/wechating/framework/log"
-	"github.com/feimumoke/wechating/framework/wcerror"
-	"github.com/feimumoke/wechating/framework/web"
-	"github.com/gin-gonic/gin"
 	"os"
+
+	"github.com/feimumoke/labequipbms/apps/basic/manager"
+	"github.com/feimumoke/labequipbms/framework/appcontext"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/log"
+	"github.com/feimumoke/labequipbms/framework/web"
+	"github.com/gin-gonic/gin"
 )
 
 type InterceptorOrderType = int64
@@ -34,11 +35,11 @@ const (
 )
 
 type ApiPermissionInterceptor struct {
-	userMng *muser.UserManager
+	userMng *manager.UserManager
 }
 
 func NewApiPermissionInterceptor() *ApiPermissionInterceptor {
-	return &ApiPermissionInterceptor{userMng: muser.NewUserManager()}
+	return &ApiPermissionInterceptor{userMng: manager.NewUserManager()}
 }
 
 func (a *ApiPermissionInterceptor) PreHandle(rfCtx *gin.Context, _ interface{}, _ interface{}, header *web.Header, wrapper *web.Handler) *bmserror.BMSError {

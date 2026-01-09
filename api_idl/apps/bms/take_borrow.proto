@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+option go_package = "github.com/feimumoke/labequipbms/api_idl/apps/bms/pbbms";
+package pbbms;
+
+// POST 拿走
+message TaskBorrowRequest{
+  required string borrow_id = 1;
+  repeated string code_list = 2;
+}
+
+
+
+message TakeBorrowResponse{
+}

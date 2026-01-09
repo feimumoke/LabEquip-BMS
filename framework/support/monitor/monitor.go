@@ -2,7 +2,8 @@ package monitor
 
 import (
 	"context"
-	"github.com/feimumoke/wechating/framework/log"
+
+	"github.com/feimumoke/labequipbms/framework/log"
 )
 
 type AwesomeEnd1 func(moduleName, interfaceName string, status int, data string) bool

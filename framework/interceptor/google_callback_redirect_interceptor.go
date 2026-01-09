@@ -2,11 +2,12 @@ package interceptor
 
 import (
 	"fmt"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/wcerror"
-	"github.com/feimumoke/wechating/framework/web"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/web"
+	"github.com/gin-gonic/gin"
 )
 
 type GoogleCallbackRedirectInterceptor struct {

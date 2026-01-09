@@ -6,11 +6,15 @@ package pbbasic;
 // POST
 message SearchUserRequest{
   optional string search_key = 1;
+  // 分页，第几页
+  optional int64 pageno = 2 [default = 1];
+  // 分页，单页数量
+  optional int64 count = 3 [default = 20];
 }
 
 message SearchUserResponse{
   optional int64 total = 1;
-  required UserInfo list = 2;
+  repeated UserInfo list = 2;
 }
 
 message UserInfo {

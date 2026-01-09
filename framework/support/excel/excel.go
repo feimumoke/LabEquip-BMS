@@ -3,22 +3,24 @@ package excel
 import (
 	"bytes"
 	"fmt"
-	"github.com/feimumoke/wechating/apps/entity"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/log"
-	"github.com/feimumoke/wechating/framework/support/collection"
-	"github.com/feimumoke/wechating/framework/support/convert"
-	"github.com/feimumoke/wechating/framework/support/env"
-	"github.com/feimumoke/wechating/framework/support/expression"
-	"github.com/feimumoke/wechating/framework/support/util"
-	"github.com/feimumoke/wechating/framework/wcerror"
-	"github.com/feimumoke/wechating/framework/web"
-	"github.com/xuri/excelize/v2"
+
 	"io/ioutil"
 	"reflect"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/defines/entity"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/log"
+	"github.com/feimumoke/labequipbms/framework/support/collection"
+	"github.com/feimumoke/labequipbms/framework/support/convert"
+	"github.com/feimumoke/labequipbms/framework/support/env"
+	"github.com/feimumoke/labequipbms/framework/support/expression"
+	"github.com/feimumoke/labequipbms/framework/support/util"
+	"github.com/feimumoke/labequipbms/framework/web"
+	"github.com/xuri/excelize/v2"
 )
 
 var arr = [...]string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",

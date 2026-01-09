@@ -2,8 +2,9 @@ package task
 
 import (
 	"context"
-	"github.com/feimumoke/wechating/framework/wcerror"
 	"sync"
+
+	"github.com/feimumoke/labequipbms/framework/bmserror"
 )
 
 type errGroup struct {

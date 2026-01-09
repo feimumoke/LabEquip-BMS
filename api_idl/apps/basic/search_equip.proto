@@ -7,11 +7,16 @@ package pbbasic;
 message SearchEquipRequest{
   repeated int64 category_id_list = 1;
   optional string equip_name = 2;
+
+  // 分页，第几页
+  optional int64 pageno = 3 [default = 1];
+  // 分页，单页数量
+  optional int64 count = 4 [default = 20];
 }
 
 message SearchEquipResponse{
   optional int64 total = 1;
-  required EquipInfo list = 2;
+  repeated EquipInfo list = 2;
 }
 
 message EquipInfo {

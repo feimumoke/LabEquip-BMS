@@ -19,8 +19,8 @@ func (this *SearchUserRequest) Validate() error {
 	return nil
 }
 func (this *SearchUserResponse) Validate() error {
-	if this.List != nil {
-		if err := github_com_mwitkow_go_proto_validators.CallValidatorIfExists(&(*(this.List))); err != nil {
+	for _, item := range this.List {
+		if err := github_com_mwitkow_go_proto_validators.CallValidatorIfExists(&(*(item))); err != nil {
 			return github_com_mwitkow_go_proto_validators.FieldError("List", err)
 		}
 	}

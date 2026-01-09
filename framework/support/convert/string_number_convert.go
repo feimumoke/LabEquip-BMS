@@ -3,10 +3,11 @@ package convert
 import (
 	"encoding/binary"
 	"fmt"
-	"github.com/feimumoke/wechating/framework/constant"
-	"github.com/feimumoke/wechating/framework/wcerror"
 	"strconv"
 	"strings"
+
+	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/framework/bmserror"
 )
 
 func floatToString(f float64) string {

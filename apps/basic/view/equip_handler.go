@@ -9,6 +9,8 @@ import (
 	"github.com/feimumoke/labequipbms/defines/constant"
 	"github.com/feimumoke/labequipbms/defines/entity"
 	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/support/convert"
+	"github.com/feimumoke/labequipbms/framework/support/paginator"
 	"github.com/feimumoke/labequipbms/framework/support/timeutil"
 	"github.com/feimumoke/labequipbms/framework/transaction"
 	"github.com/feimumoke/labequipbms/framework/web"
@@ -72,4 +74,38 @@ func (h EquipHandler) CreateEquipHandler(ctx context.Context, header *web.Header
 		return nil, transactionErr.Mark()
 	}
 	return &pbbasic.CreateEquipResponse{}, nil
+}
+
+func (h EquipHandler) SearchEquipHandler(ctx context.Context, header *web.Header, i interface{}) (interface{}, *bmserror.BMSError) {
+	req := i.(*pbbasic.SearchEquipRequest)
+	pageIn := &paginator.PageIn{
+		Pageno:     req.GetPageno(),
+		Count:      req.GetCount(),
+		IsGetTotal: true,
+	}
+	equipList, total, bmsError := h.equipMng.SearchEquipMng(ctx, &manager.EquipSearchParam{
+		CategoryIdList: req.GetCategoryIdList(),
+		EquipName:      req.GetEquipName(),
+		PageIn:         pageIn,
+	})
+	if bmsError != nil {
+		return nil, bmsError.Mark()
+	}
+	equipInfoList := make([]*pbbasic.EquipInfo, 0, len(equipList))
+	for _, equip := range equipList {
+		equipInfo := &pbbasic.EquipInfo{
+			EquipId:      &equip.EquipId,
+			EquipName:    &equip.EquipName,
+			CategoryId:   &equip.CategoryId,
+			CategoryName: &equip.CategoryName,
+			Description:  &equip.Description,
+			Creator:      &equip.Creator,
+			Ctime:        &equip.Ctime,
+		}
+		equipInfoList = append(equipInfoList, equipInfo)
+	}
+	return &pbbasic.SearchEquipResponse{
+		Total: convert.Int64(total),
+		List:  equipInfoList,
+	}, nil
 }
