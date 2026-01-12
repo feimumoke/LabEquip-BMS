@@ -29,8 +29,12 @@ message InvTransaction {
   optional string lab_name = 6;
   optional string operator = 7;
   optional string remark = 8;
-  optional int64 avail_qty = 13;
-  optional int64 op_qty = 9;
+  optional int64 total_qty = 14;        // 总数
+  optional int64 on_hand_qty = 15;      // 在手数量
+  optional int64 avail_qty = 13;        // 可用库存
+  optional int64 borrowed_qty = 16;     // 借出数量
+  optional int64 allocated_qty = 17;    // 分配数量
+  optional int64 op_qty = 9;            // 操作数量
   optional int64 trans_type = 10;
   optional int64 sheet_type = 11;
   optional int64 ctime = 12;

@@ -9,7 +9,6 @@ import (
 	"github.com/feimumoke/labequipbms/defines/constant"
 	"github.com/feimumoke/labequipbms/defines/entity"
 	"github.com/feimumoke/labequipbms/framework/bmserror"
-	"github.com/feimumoke/labequipbms/framework/log"
 	"github.com/feimumoke/labequipbms/framework/web"
 	"github.com/gin-gonic/gin"
 )
@@ -28,13 +27,13 @@ func (l LoginStatusInterceptor) PreHandle(rfCtx *gin.Context, _ interface{}, _ i
 	if l.noNeedVerify(wrapper) {
 		return nil
 	}
-	user, err := l.getUserCache(rfCtx)
-	log.Infof("getUserCache %v", user)
-	if err != nil {
-		return err.Mark()
-	}
-
-	l.fillHeaderWithUser(header, user)
+	//user, err := l.getUserCache(rfCtx)
+	//log.Infof("getUserCache %v", user)
+	//if err != nil {
+	//	return err.Mark()
+	//}
+	//
+	//l.fillHeaderWithUser(header, user)
 
 	return nil
 }

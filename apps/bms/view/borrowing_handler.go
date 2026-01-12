@@ -39,15 +39,15 @@ func (h *BorrowingHandler) CreateBorrowHandler(ctx context.Context, header *web.
 	if req.GetEquipId() == "" {
 		return nil, bmserror.NewError(constant.ErrParam, "equip_id is empty")
 	}
-	if req.GetLabId() == "" {
+	if req.GetLabCode() == "" {
 		return nil, bmserror.NewError(constant.ErrParam, "lab_id is empty")
 	}
-	if req.GetCount() <= 0 {
+	if req.GetBorrowQty() <= 0 {
 		return nil, bmserror.NewError(constant.ErrParam, "count must be greater than 0")
 	}
 
 	// 获取实验室信息
-	lab, bmsErr := h.labMng.GetLabByCode(ctx, req.GetLabId())
+	lab, bmsErr := h.labMng.GetLabByCode(ctx, req.GetLabCode())
 	if bmsErr != nil {
 		return nil, bmsErr.Mark()
 	}
@@ -56,7 +56,7 @@ func (h *BorrowingHandler) CreateBorrowHandler(ctx context.Context, header *web.
 	}
 
 	// 调用 service 创建借记任务
-	_, _, bmsErr = h.borrowService.CreateBorrowTask(ctx, lab.LabCode, req.GetEquipId(), req.GetCount(), req.GetDescription(), header.UserEmail)
+	_, _, bmsErr = h.borrowService.CreateBorrowTask(ctx, lab.LabCode, req.GetEquipId(), req.GetBorrowQty(), req.GetDescription(), header.UserEmail)
 	if bmsErr != nil {
 		return nil, bmsErr.Mark()
 	}
@@ -211,7 +211,7 @@ func (h *BorrowingHandler) SearchBorrowTaskHandler(ctx context.Context, header *
 		borrowTaskInfo := &pbbms.BorrowTaskInfo{
 			TaskId:     &task.TaskID,
 			EquipId:    &task.EquipId,
-			EquipName:  []string{equipName},
+			EquipName:  convert.String(equipName),
 			LabCode:    &task.LabId,
 			LabName:    &labName,
 			BorrowQty:  &borrowQty,

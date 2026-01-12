@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试 Ant Design Message</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@4.24.0/dist/antd.min.css">
+</head>
+<body>
+    <div style="padding: 50px;">
+        <h1>测试错误提示</h1>
+        <button id="testBtn" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+            点击测试弹窗
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/antd@4.24.0/dist/antd.min.js"></script>
+
+    <script>
+        // 测试 message 是否可用
+        document.getElementById('testBtn').addEventListener('click', function() {
+            console.log('按钮被点击');
+            console.log('antd 对象:', window.antd);
+            console.log('message 对象:', window.antd.message);
+            
+            window.antd.message.success('成功提示');
+            setTimeout(() => {
+                window.antd.message.error('错误提示 - retcode=-1');
+            }, 1000);
+            setTimeout(() => {
+                window.antd.message.warning('警告提示');
+            }, 2000);
+        });
+
+        // 页面加载后自动测试
+        window.onload = function() {
+            console.log('页面加载完成');
+            console.log('Ant Design 版本:', window.antd);
+        };
+    </script>
+</body>
+</html>
+

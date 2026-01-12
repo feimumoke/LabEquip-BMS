@@ -1,0 +1,143 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景动画装饰 */
+.login-container::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  top: -200px;
+  left: -200px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.login-container::after {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  bottom: -150px;
+  right: -150px;
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(20px) translateX(20px);
+  }
+}
+
+.login-card {
+  width: 450px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  animation: slideUp 0.6s ease-out;
+  z-index: 1;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-card .ant-card-head {
+  border-bottom: none;
+  padding-top: 32px;
+  padding-bottom: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-card .ant-card-head-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.login-card .ant-card-body {
+  padding: 24px 40px 40px;
+}
+
+.login-card .ant-tabs-nav {
+  margin-bottom: 32px;
+}
+
+.login-card .ant-tabs-tab {
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 16px;
+}
+
+.login-card .ant-form-item {
+  margin-bottom: 24px;
+}
+
+.login-card .ant-input-affix-wrapper,
+.login-card .ant-input {
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 15px;
+}
+
+.login-card .ant-input-affix-wrapper:hover,
+.login-card .ant-input:hover {
+  border-color: #667eea;
+}
+
+.login-card .ant-input-affix-wrapper-focused,
+.login-card .ant-input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.login-card .ant-btn-primary {
+  height: 48px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+}
+
+.login-card .ant-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.login-card .ant-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* 输入框图标颜色 */
+.login-card .anticon {
+  color: #667eea;
+}
+

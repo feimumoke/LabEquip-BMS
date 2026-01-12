@@ -7,7 +7,10 @@ import (
 	"github.com/feimumoke/labequipbms/apps/common/idutil"
 	"github.com/feimumoke/labequipbms/defines/constant"
 	"github.com/feimumoke/labequipbms/defines/entity"
+	"github.com/feimumoke/labequipbms/defines/message"
+	"github.com/feimumoke/labequipbms/framework/asynctask"
 	"github.com/feimumoke/labequipbms/framework/bmserror"
+	"github.com/feimumoke/labequipbms/framework/log"
 	"github.com/feimumoke/labequipbms/framework/support/collection"
 	"github.com/feimumoke/labequipbms/framework/support/timeutil"
 	"github.com/feimumoke/labequipbms/framework/transaction"
@@ -15,12 +18,14 @@ import (
 
 type BorrowService struct {
 	borrowTaskMng    *manager.BorrowTaskManager
+	inventoryMng     *manager.InventoryManager
 	inventoryService *InventoryService
 }
 
 func NewBorrowService() *BorrowService {
 	return &BorrowService{
 		borrowTaskMng:    manager.NewBorrowTaskManager(),
+		inventoryMng:     manager.NewInventoryManager(),
 		inventoryService: NewInventoryService(),
 	}
 }
@@ -38,36 +43,15 @@ func (s *BorrowService) CreateBorrowTask(ctx context.Context, labId, equipId str
 		if bmsError != nil {
 			return bmsError.Mark()
 		}
-
-		// 检查库存是否足够
-		available, bmsError := s.inventoryService.CheckInventoryAvailable(ctx, labId, equipId, count)
+		inventory, bmsError := s.inventoryMng.GetInventoryByLabAndEquip(ctx, labId, equipId, false)
 		if bmsError != nil {
 			return bmsError.Mark()
 		}
-
-		now := timeutil.GetCurrentUnix()
-
-		if !available {
-			// 库存不足，状态为pending
-			taskStatus = constant.BorrowTaskStatusPending
-		} else {
-			// 预分配库存
-			stockReq := &TransStockRequest{
-				LabId:          labId,
-				EquipId:        equipId,
-				Count:          count,
-				SheetId:        taskId,
-				TransSheetType: constant.TransactionSheetTypeBorrow,
-				TransType:      constant.TransactionTypeAllocate,
-				Operator:       operator,
-				Description:    description,
-			}
-			_, bmsErr := s.inventoryService.TransInventory(ctx, stockReq)
-			if bmsErr != nil {
-				return bmsErr.Mark()
-			}
-			taskStatus = constant.BorrowTaskStatusAllocate
+		if inventory == nil {
+			return bmserror.NewError(constant.ErrParam, "lab %v not have equip %v", labId, equipId)
 		}
+		now := timeutil.GetCurrentUnix()
+		taskStatus = constant.BorrowTaskStatusPending
 		// 创建借记任务
 		task := &entity.BorrowTask{
 			TaskID:     taskId,
@@ -82,12 +66,8 @@ func (s *BorrowService) CreateBorrowTask(ctx context.Context, labId, equipId str
 		if bmsError := s.borrowTaskMng.CreateBorrowTask(ctx, task); bmsError != nil {
 			return bmsError.Mark()
 		}
-
 		// 创建任务日志
 		statusMsg := "pending"
-		if taskStatus == constant.BorrowTaskStatusAllocate {
-			statusMsg = "allocated"
-		}
 		taskLog := &entity.BorrowTaskLog{
 			TaskID:     taskId,
 			TaskStatus: taskStatus,
@@ -120,7 +100,6 @@ func (s *BorrowService) CancelBorrowTask(ctx context.Context, taskId, reason, op
 		if task == nil {
 			return bmserror.NewError(constant.ErrParam, "borrow task not found")
 		}
-
 		// 检查状态，approve之前可以取消
 		if task.TaskStatus == constant.BorrowTaskStatusOngoing {
 			return bmserror.NewError(constant.ErrParam, "ongoing cannot cancel approved task")
@@ -192,32 +171,38 @@ func (s *BorrowService) ApproveBorrowTask(ctx context.Context, taskId string, ap
 			return bmserror.NewError(constant.ErrParam, "borrow task not found")
 		}
 		// 检查状态，必须是已经分配库存状态
-		if task.TaskStatus != constant.BorrowTaskStatusAllocate {
+		if task.TaskStatus != constant.BorrowTaskStatusPending {
 			return bmserror.NewError(constant.ErrParam, "task status must be allocated")
 		}
 		task.Approval = operator
-
 		now := timeutil.GetCurrentUnix()
 		if approved {
 			// 审批通过，通知用户
 			// 更新任务状态
 			task.TaskStatus = constant.BorrowTaskStatusApproval
+			err := asynctask.SendMessageInProcess(ctx, message.ApproveBorrowTaskName, &message.ApproveBorrowMessage{
+				TaskID:   taskId,
+				Operator: operator,
+			})
+			if err != nil {
+				return err.Mark()
+			}
 		} else {
 			// 审批拒绝，归还预分配库存
-			stockReq := &TransStockRequest{
-				LabId:          task.LabId,
-				EquipId:        task.EquipId,
-				Count:          task.BorrowQty,
-				SheetId:        taskId,
-				TransSheetType: constant.TransactionSheetTypeBorrow,
-				TransType:      constant.TransactionTypeReject,
-				Operator:       operator,
-				Description:    reason,
-			}
-			_, bmsErr := s.inventoryService.TransInventory(ctx, stockReq)
-			if bmsErr != nil {
-				return bmsErr.Mark()
-			}
+			//stockReq := &TransStockRequest{
+			//	LabId:          task.LabId,
+			//	EquipId:        task.EquipId,
+			//	Count:          task.BorrowQty,
+			//	SheetId:        taskId,
+			//	TransSheetType: constant.TransactionSheetTypeBorrow,
+			//	TransType:      constant.TransactionTypeReject,
+			//	Operator:       operator,
+			//	Description:    reason,
+			//}
+			//_, bmsErr := s.inventoryService.TransInventory(ctx, stockReq)
+			//if bmsErr != nil {
+			//	return bmsErr.Mark()
+			//}
 			// 更新任务状态
 			task.TaskStatus = constant.BorrowTaskStatusReject
 		}
@@ -244,7 +229,6 @@ func (s *BorrowService) ApproveBorrowTask(ctx context.Context, taskId string, ap
 		if bmsError := s.borrowTaskMng.CreateBorrowTaskLog(ctx, taskLog); bmsError != nil {
 			return bmsError.Mark()
 		}
-
 		return nil
 	})
 
@@ -252,6 +236,60 @@ func (s *BorrowService) ApproveBorrowTask(ctx context.Context, taskId string, ap
 		return transactionErr.Mark()
 	}
 
+	return nil
+}
+
+func (s *BorrowService) ApprovalMessage(ctx context.Context, msg *message.ApproveBorrowMessage) *bmserror.BMSError {
+	tErr := transaction.PropagationRequired(ctx, func(ctx context.Context) *bmserror.BMSError {
+		task, bmsError := s.borrowTaskMng.GetBorrowTaskByTaskId(ctx, msg.TaskID, false)
+		if bmsError != nil {
+			return bmsError.Mark()
+		}
+		if task == nil {
+			return bmserror.NewError(constant.ErrParam, "borrow task not found")
+		}
+		if task.TaskStatus != constant.BorrowTaskStatusApproval {
+			log.Infof("task status must be allocated")
+			return nil
+		}
+		// 预分配库存
+		stockReq := &TransStockRequest{
+			LabId:          task.LabId,
+			EquipId:        task.EquipId,
+			Count:          task.BorrowQty,
+			SheetId:        task.TaskID,
+			TransSheetType: constant.TransactionSheetTypeBorrow,
+			TransType:      constant.TransactionTypeAllocate,
+			Operator:       msg.Operator,
+			Description:    "allocate borrow task",
+		}
+		_, bmsErr := s.inventoryService.TransInventory(ctx, stockReq)
+		if bmsErr != nil {
+			return bmsErr.Mark()
+		}
+
+		task.TaskStatus = constant.BorrowTaskStatusAllocate
+		task.Mtime = timeutil.GetCurrentUnix()
+		if bmsError := s.borrowTaskMng.UpdateBorrowTask(ctx, task); bmsError != nil {
+			return bmsError.Mark()
+		}
+		// 创建任务日志
+		taskLog := &entity.BorrowTaskLog{
+			TaskID:     task.TaskID,
+			TaskStatus: constant.BorrowTaskStatusAllocate,
+			Remark:     "allocate borrow task",
+			Operator:   msg.Operator,
+			Ctime:      timeutil.GetCurrentUnix(),
+		}
+		if bmsError := s.borrowTaskMng.CreateBorrowTaskLog(ctx, taskLog); bmsError != nil {
+			return bmsError.Mark()
+		}
+
+		return nil
+	})
+	if tErr != nil {
+		return tErr.Mark()
+	}
 	return nil
 }
 
@@ -267,8 +305,8 @@ func (s *BorrowService) TaskBorrowTask(ctx context.Context, taskId, operator str
 		if task == nil {
 			return bmserror.NewError(constant.ErrParam, "borrow task not found")
 		}
-		if task.TaskStatus != constant.BorrowTaskStatusApproval {
-			return bmserror.NewError(constant.ErrParam, "task status must be approved")
+		if task.TaskStatus != constant.BorrowTaskStatusAllocate {
+			return bmserror.NewError(constant.ErrParam, "task status must be allocated")
 		}
 		//归还借记库存
 		stockReq := &TransStockRequest{

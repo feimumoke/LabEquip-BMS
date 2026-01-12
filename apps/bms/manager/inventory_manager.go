@@ -95,6 +95,7 @@ func (m *InventoryManager) UpdateInventory(ctx context.Context, inventory *entit
 		"total_qty":     inventory.TotalQty,
 		"available_qty": inventory.AvailableQty,
 		"borrowed_qty":  inventory.BorrowedQty,
+		"on_hand_qty":   inventory.OnHandQty,
 		"allocated_qty": inventory.AllocatedQty,
 		"operator":      inventory.Operator,
 		"mtime":         now,

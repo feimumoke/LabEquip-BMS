@@ -2,6 +2,7 @@ package view
 
 import (
 	pbbms "github.com/feimumoke/labequipbms/api_idl/apps/bms"
+	"github.com/feimumoke/labequipbms/defines/message"
 	"github.com/feimumoke/labequipbms/framework/asynctask"
 	"github.com/feimumoke/labequipbms/framework/web"
 )
@@ -38,6 +39,7 @@ func initBorrowing(s *web.BasicServer, r *asynctask.AsyncRunner) {
 
 func initApproval(s *web.BasicServer, r *asynctask.AsyncRunner) {
 	h := NewApprovalHandler()
+	r.RegisterMessageHandler(message.ApproveBorrowTaskName, h.ApprovalMessage, &message.ApproveBorrowMessage{})
 	s.RegisterPOST("/apps/bms/borrow/approve_borrow", h.ApproveBorrowHandler, &pbbms.ApproveBorrowRequest{})
 }
 

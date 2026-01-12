@@ -1,0 +1,98 @@
+.logo {
+  height: 64px;
+  margin: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+}
+
+.ant-layout-sider-collapsed .logo {
+  padding: 0;
+}
+
+.ant-layout-sider-collapsed .logo span {
+  display: none;
+}
+
+/* 侧边栏样式优化 */
+.ant-layout-sider {
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+.ant-layout-sider-dark {
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  margin: 4px 8px;
+  width: calc(100% - 16px);
+}
+
+.ant-menu-dark .ant-menu-item {
+  margin: 4px 8px;
+  width: calc(100% - 16px);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.ant-menu-dark .ant-menu-item:hover {
+  background: rgba(102, 126, 234, 0.2);
+}
+
+.ant-menu-dark .ant-menu-submenu-title {
+  margin: 4px 8px;
+  width: calc(100% - 16px);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.ant-menu-dark .ant-menu-submenu-title:hover {
+  background: rgba(102, 126, 234, 0.2);
+}
+
+/* Header 样式优化 */
+.ant-layout-header {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+}
+
+/* Content 样式优化 */
+.ant-layout-content {
+  background: #f5f5f5 !important;
+  border-radius: 12px;
+  margin: 16px !important;
+}
+
+/* 用户下拉菜单样式 */
+.ant-dropdown-menu {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 头像样式 */
+.ant-avatar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* 折叠按钮样式 */
+.ant-layout-sider-trigger {
+  background: #0f172a;
+  transition: all 0.3s ease;
+}
+
+.ant-layout-sider-trigger:hover {
+  background: #1e293b;
+}
+

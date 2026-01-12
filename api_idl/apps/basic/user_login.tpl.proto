@@ -10,10 +10,19 @@ message UserLoginRequest{
   required string passwd = 3;
 }
 
-
+message LoginUserInfo {
+  required string user_id = 1;
+  required string name = 2;
+  required string email = 3;
+  required int64 role = 4;
+  optional string phone = 5;
+  optional string avatar = 6;
+}
 
 message UserLoginResponse{
   required int64 login_status = 1;
-  required string user_name = 2;
+  optional string user_name = 2;
+  optional string token = 3;
+  optional LoginUserInfo user_info = 4;
 }
 

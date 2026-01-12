@@ -6,6 +6,7 @@ package pbbasic
 import (
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	github_com_mwitkow_go_proto_validators "github.com/mwitkow/go-proto-validators"
 	math "math"
 )
 
@@ -17,6 +18,14 @@ var _ = math.Inf
 func (this *UserLoginRequest) Validate() error {
 	return nil
 }
+func (this *LoginUserInfo) Validate() error {
+	return nil
+}
 func (this *UserLoginResponse) Validate() error {
+	if this.UserInfo != nil {
+		if err := github_com_mwitkow_go_proto_validators.CallValidatorIfExists(&(*(this.UserInfo))); err != nil {
+			return github_com_mwitkow_go_proto_validators.FieldError("UserInfo", err)
+		}
+	}
 	return nil
 }

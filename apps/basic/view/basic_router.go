@@ -25,6 +25,7 @@ func initLab(s *web.BasicServer, r *asynctask.AsyncRunner) {
 
 func initUser(s *web.BasicServer, r *asynctask.AsyncRunner) {
 	h := NewUserHandler()
+	s.RegisterPOST("/apps/common/enums", h.GetEnumsView, &struct{}{})
 	s.RegisterPOST("/apps/basic/user/create_user", h.CreateUserHandler, &pbbasic.CreateUserRequest{})
 	s.RegisterPOST("/apps/basic/user/search_user", h.SearchUserHandler, &pbbasic.SearchUserRequest{})
 	s.RegisterPOST("/apps/basic/user/user_login", h.UserLoginHandler, &pbbasic.UserLoginRequest{})

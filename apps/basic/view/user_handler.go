@@ -200,7 +200,7 @@ func (h UserHandler) UserLoginHandler(ctx context.Context, header *web.Header, i
 
 	loginSession := &entity.LoginSession{
 		UserID:     user.UserID,
-		SessionID:  manager.GenerateUserSessionCacheKey(user.UserID, sessionID),
+		SessionID:  sessionID,
 		UserInfo:   string(userInfoJson),
 		ExpireTime: expireTime,
 		Ctime:      now,
@@ -220,8 +220,24 @@ func (h UserHandler) UserLoginHandler(ctx context.Context, header *web.Header, i
 
 	loginStatus := int64(1)
 	userName := user.Name
+
+	// 构造用户信息
+	userInfo := &pbbasic.LoginUserInfo{
+		UserId: &user.UserID,
+		Name:   &user.Name,
+		Email:  &user.Email,
+		Role:   &user.Role,
+		Phone:  &user.Phone,
+		Avatar: &user.Avatar,
+	}
+
+	// 返回 session token
+	token := sessionID
+
 	return &pbbasic.UserLoginResponse{
 		LoginStatus: &loginStatus,
 		UserName:    &userName,
+		Token:       &token,
+		UserInfo:    userInfo,
 	}, nil
 }

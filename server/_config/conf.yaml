@@ -14,66 +14,29 @@ datasource:
     maxIdleConns: 10
     autoReport: true
     groups:
-      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_process_db_1"
+      - masterDsn: "root:123456@(127.0.0.1:3306)/bms_basic_db"
         replicasDsn:
-          - "root:123456@(127.0.0.1:3306)/wc_process_db_1"
-      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_process_db_2"
-        replicasDsn:
-          - "root:123456@(127.0.0.1:3306)/wc_process_db_2"
-      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_process_db_3"
-        replicasDsn:
-          - "root:123456@(127.0.0.1:3306)/wc_process_db_3"
-  inventory:
+          - "root:123456@(127.0.0.1:3306)/bms_basic_db"
+  inv:
     driver: mysql
     maxOpenConns: 200
     connMaxLifetime: 3600
     maxIdleConns: 10
     autoReport: true
     groups:
-      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_inventory_db_1"
+      - masterDsn: "root:123456@(127.0.0.1:3306)/bms_inv_db"
         replicasDsn:
-          - "root:123456@(127.0.0.1:3306)/wc_inventory_db_1"
-      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_inventory_db_2"
-        replicasDsn:
-          - "root:123456@(127.0.0.1:3306)/wc_inventory_db_2"
-      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_inventory_db_3"
-        replicasDsn:
-          - "root:123456@(127.0.0.1:3306)/wc_inventory_db_3"
-  order:
+          - "root:123456@(127.0.0.1:3306)/bms_inv_db"
+  bms:
     driver: mysql
     maxOpenConns: 200
     connMaxLifetime: 3600
     maxIdleConns: 10
     autoReport: true
     groups:
-      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_order_db_1"
+      - masterDsn: "root:123456@(127.0.0.1:3306)/bms_task_db"
         replicasDsn:
-          - "root:123456@(127.0.0.1:3306)/wc_order_db_1"
-      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_order_db_2"
-        replicasDsn:
-          - "root:123456@(127.0.0.1:3306)/wc_order_db_2"
-  basic:
-    driver: mysql
-    maxOpenConns: 100
-    connMaxLifetime: 3600
-    maxIdleConns: 10
-    autoReport: true
-    groups:
-      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_basic_db"
-        replicasDsn:
-          - "root:123456@(127.0.0.1:3306)/wc_basic_db"
-  message:
-    driver: mysql
-    maxOpenConns: 100
-    connMaxLifetime: 3600
-    maxIdleConns: 10
-    autoReport: true
-    groups:
-      - masterDsn: "root:123456@(127.0.0.1:3306)/wc_message_db"
-        replicasDsn:
-          - "root:123456@(127.0.0.1:3306)/wc_message_db"
-
-
+          - "root:123456@(127.0.0.1:3306)/bms_task_db"
 
 
 

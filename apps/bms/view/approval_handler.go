@@ -7,6 +7,7 @@ import (
 	"github.com/feimumoke/labequipbms/apps/basic/manager"
 	bmservice "github.com/feimumoke/labequipbms/apps/bms/service"
 	"github.com/feimumoke/labequipbms/defines/constant"
+	"github.com/feimumoke/labequipbms/defines/message"
 	"github.com/feimumoke/labequipbms/framework/bmserror"
 	"github.com/feimumoke/labequipbms/framework/web"
 )
@@ -53,4 +54,9 @@ func (h *ApprovalHandler) ApproveBorrowHandler(ctx context.Context, header *web.
 	}
 
 	return &pbbms.ApproveBorrowResponse{}, nil
+}
+
+func (h *ApprovalHandler) ApprovalMessage(ctx context.Context, msg interface{}) *bmserror.BMSError {
+	req := msg.(*message.ApproveBorrowMessage)
+	return h.borrowService.ApprovalMessage(ctx, req)
 }

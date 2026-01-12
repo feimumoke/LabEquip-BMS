@@ -201,7 +201,67 @@ func toString(o interface{}, limit int) string {
 func parseRequestHeader(c *gin.Context) (*Header, error) {
 	header := &Header{}
 	err := c.ShouldBindHeader(header)
-	return header, err
+	if err != nil {
+		return nil, err
+	}
+
+	// 获取客户端 IP
+	header.ClientIP = c.ClientIP()
+
+	// 获取请求路径
+	requestPath := c.Request.URL.Path
+
+	// 白名单路径不需要验证登录态
+	if IsWhiteListPath(requestPath) {
+		return header, nil
+	}
+
+	//:1:admin_001:c300a91e-87e
+	// 从 HTTP Header 中获取 token
+	// 支持两种方式：
+	// 1. Authorization: Bearer <token>
+	// 2. X-User-Email 和直接的 token
+	token := ""
+	authHeader := c.GetHeader("Authorization")
+	if authHeader != "" && strings.HasPrefix(authHeader, "Bearer ") {
+		token = strings.TrimPrefix(authHeader, "Bearer ")
+	} else {
+		// 兼容直接传 token 的方式
+		token = c.GetHeader("token")
+		if token == "" {
+			token = c.GetHeader("Token")
+		}
+	}
+
+	userEmail := c.GetHeader("X-User-Email")
+
+	// 如果没有 token，返回未授权错误
+	if token == "" {
+		return nil, errors.New("unauthorized: token is required")
+	}
+
+	// 验证 token 并获取用户信息
+	ctx := c.Request.Context()
+	authService := GetAuthService()
+	accountInfo, authErr := authService.ValidateToken(ctx, token)
+	if authErr != nil {
+		return nil, errors.New("unauthorized: " + authErr.Error())
+	}
+
+	// 填充用户信息到 header
+	header.UserID = accountInfo.UserID
+	header.UserEmail = accountInfo.Email
+	if userEmail != "" {
+		header.UserEmail = userEmail
+	}
+
+	// 将用户信息存储到 gin.Context 中，供后续使用
+	c.Set("user_id", accountInfo.UserID)
+	c.Set("user_email", accountInfo.Email)
+	c.Set("user_name", accountInfo.UserName)
+	c.Set("account_info", accountInfo)
+
+	return header, nil
 }
 
 func fillGetParam(c *gin.Context, req interface{}) error {

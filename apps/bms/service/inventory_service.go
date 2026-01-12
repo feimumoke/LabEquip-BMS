@@ -234,19 +234,11 @@ func (s *InventoryService) TransInventory(ctx context.Context, req *TransStockRe
 		default:
 			return bmserror.NewError(constant.ErrParam, "invalid transaction type")
 		}
-
-		// 归还库存：从BorrowedQty转为AvailableQty
-		if inventory.BorrowedQty < count {
-			return bmserror.NewError(constant.ErrParam, "borrowed quantity is not enough")
-		}
-		inventory.BorrowedQty -= count
-		inventory.AvailableQty += count
 		inventory.Operator = operator
 		inventory.Mtime = timeutil.GetCurrentUnix()
 		if bmsError := s.inventoryMng.UpdateInventory(ctx, inventory); bmsError != nil {
 			return bmsError.Mark()
 		}
-
 		// 生成交易ID
 		transactionId, bmsError = idutil.GenerateTransactionID(ctx)
 		if bmsError != nil {
@@ -267,8 +259,8 @@ func (s *InventoryService) TransInventory(ctx context.Context, req *TransStockRe
 			BorrowedQty:   inventory.BorrowedQty,
 			AllocatedQty:  inventory.AllocatedQty,
 			OpQty:         count,
-			TransType:     constant.TransactionTypeIncrease,
-			SheetType:     constant.TransactionSheetTypeBorrow,
+			TransType:     req.TransType,
+			SheetType:     req.TransSheetType,
 			Ctime:         timeutil.GetCurrentUnix(),
 		}
 		if bmsError := s.transactionMng.CreateTransactionLog(ctx, transLog); bmsError != nil {
@@ -280,16 +272,4 @@ func (s *InventoryService) TransInventory(ctx context.Context, req *TransStockRe
 		return nil, transactionErr.Mark()
 	}
 	return &TransStockResponse{TransSheetID: transactionId}, nil
-}
-
-// CheckInventoryAvailable 检查库存是否足够（不锁定，只读查询）
-func (s *InventoryService) CheckInventoryAvailable(ctx context.Context, labId, equipId string, count int64) (bool, *bmserror.BMSError) {
-	inventory, bmsError := s.inventoryMng.GetInventoryByLabAndEquip(ctx, labId, equipId, false)
-	if bmsError != nil {
-		return false, bmsError.Mark()
-	}
-	if inventory == nil {
-		return false, nil
-	}
-	return inventory.AvailableQty >= count, nil
 }

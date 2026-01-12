@@ -5,7 +5,7 @@ const (
 )
 
 const (
-	DataSourceBasic = "basic"
+	DataSourceBasic = "default"
 	DataSourceInv   = "inv"
 	DataSourceBMS   = "bms"
 )

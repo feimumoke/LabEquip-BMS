@@ -1,0 +1,84 @@
+.home-container {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home-container h2 {
+  margin-bottom: 8px;
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.home-container p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 32px;
+}
+
+/* 统计卡片样式优化 */
+.home-container .ant-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.home-container .ant-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.home-container .ant-statistic-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.home-container .ant-statistic-content {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+/* 表格卡片样式 */
+.home-container .ant-card-head {
+  border-bottom: 2px solid #f0f0f0;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.home-container .ant-table {
+  border-radius: 8px;
+}
+
+.home-container .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 600;
+  color: #333;
+}
+
+.home-container .ant-table-tbody > tr:hover > td {
+  background: #f5f7ff;
+}
+
+/* Tag 样式优化 */
+.home-container .ant-tag {
+  border-radius: 6px;
+  padding: 2px 12px;
+  font-weight: 500;
+}
+

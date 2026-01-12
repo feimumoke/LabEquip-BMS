@@ -1,0 +1,251 @@
+/* 通用页面容器样式 */
+.page-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 页面标题样式 */
+.page-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-description {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* 搜索表单样式 */
+.search-form {
+  background: #fafafa;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #f0f0f0;
+}
+
+.search-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.search-form .ant-btn {
+  margin-right: 12px;
+}
+
+/* 操作按钮组样式 */
+.action-buttons {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* 表格容器样式 */
+.table-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* 表格操作列样式 */
+.table-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.table-actions .ant-btn-link {
+  padding: 0 8px;
+  height: auto;
+  font-size: 14px;
+}
+
+/* 状态标签样式 */
+.status-tag {
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+/* Modal 表单样式 */
+.modal-form .ant-form-item {
+  margin-bottom: 20px;
+}
+
+/* 统计卡片样式 */
+.stat-card {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* 空状态样式 */
+.empty-state {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 64px;
+  color: #d9d9d9;
+  margin-bottom: 16px;
+}
+
+.empty-state-title {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.empty-state-description {
+  font-size: 14px;
+  color: #999;
+}
+
+/* 加载状态样式 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+/* 详情页样式 */
+.detail-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.detail-section {
+  margin-bottom: 24px;
+}
+
+.detail-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.detail-item {
+  display: flex;
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  flex: 0 0 120px;
+  color: #666;
+  font-weight: 500;
+}
+
+.detail-value {
+  flex: 1;
+  color: #333;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 20px;
+  }
+  
+  .search-form {
+    padding: 16px;
+  }
+  
+  .table-container {
+    padding: 16px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .action-buttons .ant-btn {
+    width: 100%;
+  }
+}
+
+/* 渐变按钮样式 */
+.gradient-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.gradient-button:hover,
+.gradient-button:focus {
+  background: linear-gradient(135deg, #7c8ff0 0%, #8a5fb8 100%);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  transform: translateY(-1px);
+  color: #fff;
+}
+
+.gradient-button:active {
+  transform: translateY(0);
+}
+
+/* 信息提示框样式 */
+.info-box {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  border-left: 4px solid #667eea;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.info-box-title {
+  font-weight: 600;
+  color: #667eea;
+  margin-bottom: 8px;
+}
+
+.info-box-content {
+  color: #666;
+  font-size: 14px;
+}
+
+/* 表单标签必填标识 */
+.ant-form-item-required::before {
+  color: #ff4d4f !important;
+}
+
