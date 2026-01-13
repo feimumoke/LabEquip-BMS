@@ -13,6 +13,7 @@ import './styles/common.css';
 const Home = React.lazy(() => import('./pages/Home'));
 const Users = React.lazy(() => import('./pages/Users'));
 const Equipment = React.lazy(() => import('./pages/Equipment'));
+const EquipmentDetail = React.lazy(() => import('./pages/EquipmentDetail'));
 const InventoryList = React.lazy(() => import('./pages/Inventory/List'));
 const InventoryManage = React.lazy(() => import('./pages/Inventory/Manage'));
 const InventoryTasks = React.lazy(() => import('./pages/Inventory/Tasks'));
@@ -52,6 +53,7 @@ function App() {
                 </PermissionCheck>
               } />
               <Route path="equipment" element={<Equipment />} />
+              <Route path="equipment/:equipId" element={<EquipmentDetail />} />
               <Route path="inventory/list" element={<InventoryList />} />
               <Route path="inventory/manage" element={
                 <PermissionCheck requireAdmin>

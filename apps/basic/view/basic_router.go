@@ -16,6 +16,7 @@ func initEquip(s *web.BasicServer, r *asynctask.AsyncRunner) {
 	h := NewEquipHandler()
 	s.RegisterPOST("/apps/basic/equip/create_equip", h.CreateEquipHandler, &pbbasic.CreateEquipRequest{})
 	s.RegisterPOST("/apps/basic/equip/search_equip", h.SearchEquipHandler, &pbbasic.SearchEquipRequest{})
+	s.RegisterPOST("/apps/basic/equip/update_equip", h.UpdateEquipHandler, &pbbasic.UpdateEquipRequest{})
 }
 
 func initLab(s *web.BasicServer, r *asynctask.AsyncRunner) {

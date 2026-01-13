@@ -24,6 +24,25 @@ func (m *EquipManager) CreateEquip(ctx context.Context, equip *entity.EquipTab) 
 	return nil
 }
 
+func (m *EquipManager) UpdateEquip(ctx context.Context, equipId string, updates map[string]interface{}) *bmserror.BMSError {
+	if err := m.ds.GetDataSource(ctx, nil).Table(entity.EquipTabName).
+		Where("equip_id = ?", equipId).
+		Updates(updates).GetError(); err != nil {
+		return err.Mark()
+	}
+	return nil
+}
+
+func (m *EquipManager) GetEquipById(ctx context.Context, equipId string) (*entity.EquipTab, *bmserror.BMSError) {
+	var equip entity.EquipTab
+	if err := m.ds.GetDataSource(ctx, nil).Table(entity.EquipTabName).
+		Where("equip_id = ?", equipId).
+		First(&equip).GetError(); err != nil {
+		return nil, err.Mark()
+	}
+	return &equip, nil
+}
+
 type EquipSearchParam struct {
 	SearchKey      string   `json:"search_key"`
 	EquipIdList    []string `json:"equip_id_list"`

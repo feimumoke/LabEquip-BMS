@@ -1,0 +1,99 @@
+.equipment-detail-page {
+  padding: 24px;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+.equipment-detail-page .page-header {
+  margin-bottom: 24px;
+}
+
+.equipment-detail-page .page-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.image-section {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.images-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.main-carousel {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.thumbnail-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  padding: 16px 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.thumbnail-item {
+  border: 2px solid transparent;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.thumbnail-item:hover {
+  border-color: #667eea;
+  transform: scale(1.05);
+}
+
+.info-section {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.info-section .ant-descriptions-item-label {
+  font-weight: 600;
+  background-color: #fafafa;
+}
+
+.info-section .ant-descriptions-item-content {
+  font-size: 14px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .equipment-detail-page {
+    padding: 16px;
+  }
+
+  .detail-content {
+    gap: 16px;
+  }
+
+  .main-carousel {
+    height: 300px;
+  }
+
+  .thumbnail-list {
+    gap: 8px;
+  }
+
+  .thumbnail-item img {
+    width: 80px !important;
+    height: 60px !important;
+  }
+}

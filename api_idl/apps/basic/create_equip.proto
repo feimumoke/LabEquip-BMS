@@ -8,6 +8,8 @@ message CreateEquipRequest{
   required int64 category_id = 1;
   required string equip_name = 2;
   required string  description = 3;
+  optional string model = 9;
+  repeated string image_list = 10;
 }
 
 message CreateEquipResponse{

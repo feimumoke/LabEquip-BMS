@@ -5,9 +5,10 @@ const (
 )
 
 const (
-	DataSourceBasic = "default"
-	DataSourceInv   = "inv"
-	DataSourceBMS   = "bms"
+	EquipSystemDomain = "http://www.equipbms.com"
+	DataSourceBasic   = "default"
+	DataSourceInv     = "inv"
+	DataSourceBMS     = "bms"
 )
 
 const (

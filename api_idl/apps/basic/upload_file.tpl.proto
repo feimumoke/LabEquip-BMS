@@ -1,0 +1,23 @@
+syntax = "proto2";
+
+option go_package = "github.com/feimumoke/labequipbms/api_idl/apps/basic/pbbasic";
+package pbbasic;
+
+// POST
+// PC上传文件到S3
+message UploadFileRequest{
+  // required, file Name
+  required string file_name = 1;
+  // required, 待上传的文件
+  required bytes file = 2;
+  // optional, 文件保存路径，枚举值Folder
+  optional string folder = 3;
+  //0:product
+  optional int64 file_type = 6;
+}
+
+
+message UploadFileResponse{
+  // 文件下载地址
+  optional string url = 1;
+}

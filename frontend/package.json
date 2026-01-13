@@ -14,7 +14,7 @@
     "mobx-react-lite": "^3.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "HOST=www.equipbms.com react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

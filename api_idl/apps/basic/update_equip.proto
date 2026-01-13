@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+option go_package = "github.com/feimumoke/labequipbms/api_idl/apps/basic/pbbasic";
+package pbbasic;
+
+message UpdateEquipRequest {
+  required string equip_id = 1 ;
+  optional int64 category_id = 2;
+  optional string equip_name = 3;
+  optional string description = 4;
+  optional string model = 5;
+  repeated string image_list = 6;
+}
+
+message UpdateEquipResponse {
+}

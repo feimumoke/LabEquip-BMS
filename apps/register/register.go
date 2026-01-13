@@ -4,6 +4,7 @@ import (
 	"github.com/feimumoke/labequipbms/apps/basic/view"
 	bmsview "github.com/feimumoke/labequipbms/apps/bms/view"
 	"github.com/feimumoke/labequipbms/apps/common/idutil"
+	cmview "github.com/feimumoke/labequipbms/apps/common/view"
 	"github.com/feimumoke/labequipbms/framework/asynctask"
 	"github.com/feimumoke/labequipbms/framework/interceptor"
 	"github.com/feimumoke/labequipbms/framework/web"
@@ -17,6 +18,7 @@ func Init() {
 func RegisterApiAndTask(s *web.BasicServer, a *asynctask.AsyncRunner) {
 	//common
 	Init()
+	cmview.InitCommonView(s, a)
 	initBasic(s, a)
 	initBusiness(s, a)
 	initInterceptor()

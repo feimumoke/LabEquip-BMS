@@ -27,4 +27,6 @@ message EquipInfo {
   optional string description = 5;
   optional string creator = 6;
   optional int64 ctime = 7;
+  optional string model = 9;
+  repeated string images = 10;
 }

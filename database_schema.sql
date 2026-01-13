@@ -104,6 +104,7 @@ CREATE TABLE `equip_tab`
     `category_name` VARCHAR(64)  NOT NULL COMMENT '分类名称',
     `equip_name`    VARCHAR(128) NOT NULL COMMENT '设备名称',
     `model`         VARCHAR(128) DEFAULT '' COMMENT '规格型号',
+    `images`        TEXT COMMENT '设备图片URL列表(JSON格式,最多10张)',
     `creator`       VARCHAR(64)  DEFAULT '' COMMENT '创建人',
     `description`   TEXT COMMENT '描述',
     `ctime`         BIGINT(20)   NOT NULL COMMENT '创建时间(时间戳)',

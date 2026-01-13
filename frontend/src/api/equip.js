@@ -5,6 +5,11 @@ export const createEquip = (data) => {
   return request.post('/apps/basic/equip/create_equip', data);
 };
 
+// 更新设备
+export const updateEquip = (data) => {
+  return request.post('/apps/basic/equip/update_equip', data);
+};
+
 // 查询设备
 export const searchEquip = (data) => {
   return request.post('/apps/basic/equip/search_equip', data);
