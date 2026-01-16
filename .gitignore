@@ -31,6 +31,7 @@ vendor/
 # Logs
 *.log
 logs/
+!logs/.gitkeep
 
 # 上传文件目录（保留 .gitkeep）
 uploads/*

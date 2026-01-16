@@ -4,8 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
-	"os"
 	"sync/atomic"
 	"time"
 
@@ -67,25 +65,25 @@ type Option interface {
 
 func Open(dialector Dialector, opts ...Option) (db *GormDB, err error) {
 	config := NewConfig()
+
+	// 先应用选项(包括日志配置)
 	for _, opt := range opts {
 		if err := opt.Apply(config); err != nil {
 			return nil, err
 		}
 	}
+
 	if config.Config == nil {
 		config.Config = &gorm.Config{}
 	}
 
+	// 如果选项没有设置 Logger，使用默认的
+	if config.Logger == nil {
+		config.Logger = NewGormLogger()
+	}
+
 	db = &GormDB{
 		Config: config,
-	}
-	if db.Logger == nil {
-		db.Logger = logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags), logger.Config{
-			SlowThreshold:             200 * time.Millisecond,
-			LogLevel:                  logger.Info,
-			IgnoreRecordNotFoundError: false,
-			Colorful:                  true,
-		})
 	}
 
 	inner, err := gorm.Open(dialector, config.Config)

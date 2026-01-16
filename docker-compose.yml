@@ -37,6 +37,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - ./uploads:/root/uploads
+      - ./logs:/root/logs
       - ./server/_config:/root/server/_config
     networks:
       - bms-network

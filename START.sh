@@ -18,6 +18,13 @@ print_warning() {
     echo -e "${YELLOW}[WARN]${NC} $1"
 }
 
+# 创建必要的目录
+create_directories() {
+    print_message "创建必要的目录..."
+    mkdir -p uploads logs
+    chmod 755 uploads logs
+}
+
 # 检查 MySQL 是否运行
 check_mysql() {
     print_message "检查 MySQL 服务..."
@@ -84,6 +91,7 @@ main() {
     echo "========================================="
     echo ""
     
+    create_directories
     check_mysql
     check_backend_deps
     check_frontend_deps

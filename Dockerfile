@@ -58,8 +58,9 @@ COPY --from=backend-builder /app/server/_config ./server/_config
 # 复制前端构建文件
 COPY --from=frontend-builder /app/build ./frontend/build
 
-# 创建上传目录
-RUN mkdir -p uploads
+# 创建必要目录
+RUN mkdir -p uploads logs && \
+    chmod 755 uploads logs
 
 # 暴露端口
 EXPOSE 8080

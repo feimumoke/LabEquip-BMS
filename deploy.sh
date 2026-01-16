@@ -57,6 +57,9 @@ create_directories() {
     mkdir -p uploads
     chmod 755 uploads
     
+    mkdir -p logs
+    chmod 755 logs
+    
     print_message "目录创建完成 ✓"
 }
 

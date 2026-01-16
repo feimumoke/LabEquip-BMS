@@ -6,6 +6,13 @@ server:
     admin: "0.0.0.0:8082"
     cron: "0.0.0.0:8086"
 
+# 日志配置
+log:
+  dir: "./logs"           # 日志目录
+  level: "INFO"          # 日志级别: DEBUG, INFO, WARN, ERROR, FATAL
+  enableConsole: true    # 是否同时输出到控制台
+  gormLogLevel: "INFO"   # GORM SQL 日志级别: SILENT, ERROR, WARN, INFO
+
 datasource:
   default: #--task process
     driver: mysql

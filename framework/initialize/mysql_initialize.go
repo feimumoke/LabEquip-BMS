@@ -38,7 +38,9 @@ func buildDBClusters() (*orm.GormDB, *bmserror.BMSError) {
 		}
 
 	}
-	cluster, err := orm.Open(dialector)
+
+	// 创建数据库连接，应用 GORM 日志配置
+	cluster, err := orm.Open(dialector, &orm.GormLogLevelOption{})
 	if err != nil {
 		return nil, bmserror.NewError(constant.ErrDB, err.Error())
 	}

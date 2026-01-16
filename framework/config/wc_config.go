@@ -16,6 +16,7 @@ type WeChatingConfig struct {
 	DistributeCache map[string]*CacheItem          `yaml:"cache"`
 	Server          *ServerConfig                  `yaml:"server"`
 	JwtConfigs      []*JwtConfig                   `yaml:"jwtconfig"`
+	Log             *LogConfig                     `yaml:"log"`
 }
 
 type ServerConfig struct {
@@ -26,6 +27,13 @@ type JwtConfig struct {
 	Account   string `yaml:"account"`
 	AppKey    string `yaml:"ak"`
 	SecretKey string `yaml:"sk"`
+}
+
+type LogConfig struct {
+	Dir           string `yaml:"dir"`
+	Level         string `yaml:"level"`
+	EnableConsole bool   `yaml:"enableConsole"`
+	GormLogLevel  string `yaml:"gormLogLevel"`
 }
 
 var WCConfig = &WeChatingConfig{}
