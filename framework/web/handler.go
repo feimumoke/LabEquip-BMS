@@ -68,7 +68,10 @@ func (h *Handler) Do(c *gin.Context) {
 			h.setJson(c, DefaultFail, "inner error", nil)
 		}
 	}()
-
+	ctx := c.Request.Context()
+	if h.Method != HttpPOSTUpload {
+		log.CtxInfof(ctx, "basic_api_request, URL: %v", h.Url)
+	}
 	// 解析 header
 	header, err := parseRequestHeader(c)
 	if err != nil {
@@ -82,8 +85,6 @@ func (h *Handler) Do(c *gin.Context) {
 		h.setJson(c, DefaultFail, err.Error(), nil)
 		return
 	}
-
-	ctx := c.Request.Context()
 	if h.Method != HttpPOSTUpload {
 		log.CtxInfof(ctx, "basic_api_request, URL: %v, head: %v, request: %v", h.Url, header, newReq)
 	}

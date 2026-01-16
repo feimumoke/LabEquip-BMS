@@ -2,9 +2,11 @@ package trace
 
 import (
 	"context"
-	"github.com/google/uuid"
+
 	"os"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 const gLogIdKey = "logid"
@@ -18,7 +20,7 @@ func GetOrNewTraceID(ctx context.Context) string {
 	}
 
 	//local map
-	if traceID, exist := getTraceIDFromLocalMap(); exist {
+	if traceID, exist := GetTraceIDFromLocalMap(); exist {
 		return traceID
 	}
 

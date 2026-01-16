@@ -8,7 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/golang/protobuf v1.5.0
-	github.com/google/uuid v1.3.1
+	github.com/google/uuid v1.6.0
 	github.com/mwitkow/go-proto-validators v0.3.2
 	github.com/panjf2000/ants/v2 v2.8.1
 	github.com/petermattis/goid v0.0.0-20251121121749-a11dd1a45f9a

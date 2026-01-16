@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"sync"
 	"time"
+
+	"github.com/feimumoke/labequipbms/framework/support/trace"
 )
 
 // LogLevel 日志级别
@@ -208,6 +210,42 @@ func (l *BMSLogger) logf(level LogLevel, format string, v ...interface{}) {
 	levelName := levelNames[level]
 	msg := fmt.Sprintf(format, v...)
 
+	traceID, _ := trace.GetTraceIDFromLocalMap()
+
+	// 使用 Output 来跳过调用栈，显示正确的文件和行号
+	logger.Output(3, fmt.Sprintf("%v [%s] %s", traceID, levelName, msg))
+
+	// FATAL 级别直接退出
+	if level == FATAL {
+		os.Exit(1)
+	}
+}
+
+// logfWithContext 带 context 的日志记录（自动提取 traceID）
+func (l *BMSLogger) logfWithContext(ctx context.Context, level LogLevel, format string, v ...interface{}) {
+	if l == nil || l.logger == nil {
+		// 如果日志系统未初始化，使用标准输出
+		fmt.Printf(format, v...)
+		return
+	}
+
+	if level < l.level {
+		return
+	}
+
+	l.mu.RLock()
+	logger := l.logger
+	l.mu.RUnlock()
+
+	levelName := levelNames[level]
+	msg := fmt.Sprintf(format, v...)
+
+	// 从 context 中提取 traceID
+	traceID := extractTraceID(ctx)
+	if traceID != "" {
+		msg = fmt.Sprintf("%s %s", traceID, msg)
+	}
+
 	// 使用 Output 来跳过调用栈，显示正确的文件和行号
 	logger.Output(3, fmt.Sprintf("[%s] %s", levelName, msg))
 
@@ -215,6 +253,20 @@ func (l *BMSLogger) logf(level LogLevel, format string, v ...interface{}) {
 	if level == FATAL {
 		os.Exit(1)
 	}
+}
+
+// extractTraceID 从 context 中提取 traceID
+func extractTraceID(ctx context.Context) string {
+	if ctx == nil {
+		return ""
+	}
+
+	// 尝试从 context 中获取 trace_id
+	if traceID, ok := ctx.Value("logid").(string); ok {
+		return traceID
+	}
+
+	return ""
 }
 
 // 全局日志函数
@@ -267,29 +319,50 @@ func Fatalf(format string, v ...interface{}) {
 
 // 带 Context 的日志函数
 
-// CtxInfof 带上下文的 INFO 日志
+// CtxInfof 带上下文的 INFO 日志（自动提取 traceID）
 func CtxInfof(ctx context.Context, format string, v ...interface{}) {
-	Infof(format, v...)
+	if globalLogger != nil {
+		globalLogger.logfWithContext(ctx, INFO, format, v...)
+	} else {
+		fmt.Printf(format, v...)
+	}
 }
 
-// CtxDebugf 带上下文的 DEBUG 日志
+// CtxDebugf 带上下文的 DEBUG 日志（自动提取 traceID）
 func CtxDebugf(ctx context.Context, format string, v ...interface{}) {
-	Debugf(format, v...)
+	if globalLogger != nil {
+		globalLogger.logfWithContext(ctx, DEBUG, format, v...)
+	} else {
+		fmt.Printf(format, v...)
+	}
 }
 
-// CtxWarnf 带上下文的 WARN 日志
+// CtxWarnf 带上下文的 WARN 日志（自动提取 traceID）
 func CtxWarnf(ctx context.Context, format string, v ...interface{}) {
-	Warnf(format, v...)
+	if globalLogger != nil {
+		globalLogger.logfWithContext(ctx, WARN, format, v...)
+	} else {
+		fmt.Printf(format, v...)
+	}
 }
 
-// CtxErrorf 带上下文的 ERROR 日志
+// CtxErrorf 带上下文的 ERROR 日志（自动提取 traceID）
 func CtxErrorf(ctx context.Context, format string, v ...interface{}) {
-	Errorf(format, v...)
+	if globalLogger != nil {
+		globalLogger.logfWithContext(ctx, ERROR, format, v...)
+	} else {
+		fmt.Printf(format, v...)
+	}
 }
 
-// CtxFatalf 带上下文的 FATAL 日志
+// CtxFatalf 带上下文的 FATAL 日志（自动提取 traceID）
 func CtxFatalf(ctx context.Context, format string, v ...interface{}) {
-	Fatalf(format, v...)
+	if globalLogger != nil {
+		globalLogger.logfWithContext(ctx, FATAL, format, v...)
+	} else {
+		fmt.Printf(format, v...)
+		os.Exit(1)
+	}
 }
 
 // Close 关闭日志系统

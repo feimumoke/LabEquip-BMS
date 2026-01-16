@@ -28,7 +28,7 @@ func unsetTraceID() {
 	}
 }
 
-func getTraceIDFromLocalMap() (string, bool) {
+func GetTraceIDFromLocalMap() (string, bool) {
 	var traceID string
 	var ok bool
 

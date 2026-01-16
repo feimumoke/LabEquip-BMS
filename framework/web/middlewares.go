@@ -15,6 +15,7 @@ func APICtxMiddleware() func(*gin.Context) {
 		//trace id
 		ctx, unSetTraceFunc := trace.Init(c.Request.Context())
 		defer unSetTraceFunc(ctx)
+		c.Request = c.Request.WithContext(ctx)
 		c.Next()
 	}
 }

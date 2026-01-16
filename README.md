@@ -806,3 +806,50 @@ netstat -ano | findstr 8080  # Windows
 ---**更新时间**: 2026-01-16  
 **版本**: V1.0  
 **维护者**: LabEquip-BMS Team
+
+## 📚 日志系统说明
+
+系统集成了完善的日志系统，具备以下特性：
+
+- **文件日志**：`logs/bms-YYYY-MM-DD.log`
+- **控制台日志**：同时输出到控制台（本地开发）
+- **日志轮转**：每天自动切割日志文件
+- **自动清理**：保留最近 7 天的日志
+- **多日志级别**：DEBUG、INFO、WARN、ERROR、FATAL
+- **GORM 集成**：SQL 查询日志自动记录
+- **TraceID 追踪**：每个请求自动生成唯一 TraceID，方便链路追踪
+
+**查看日志示例**：
+```bash
+# 实时查看
+tail -f logs/bms-$(date +%Y-%m-%d).log
+
+# 追踪特定请求（使用 TraceID）
+grep "TraceID: xxx-xxx" logs/bms-$(date +%Y-%m-%d).log
+
+# 查看错误
+grep "\[ERROR\]" logs/bms-$(date +%Y-%m-%d).log
+```
+
+**TraceID 使用**：
+```go
+// HTTP 请求（自动）
+func Handler(c *gin.Context) {
+    ctx := c.Request.Context()
+    log.CtxInfof(ctx, "Processing\n")
+}
+
+// 定时任务（手动）
+func CronTask() {
+    ctx := context.Background()
+    traceID := log.GetOrNewTraceID(ctx)
+    ctx = context.WithValue(ctx, "trace_id", traceID)
+    log.CtxInfof(ctx, "Cron started\n")
+}
+```
+
+**详细文档**：
+- `TraceID使用指南.md` - TraceID 完整使用说明
+- `日志系统快速参考.md` - 日志系统快速参考
+- `日志系统说明.md` - 日志系统详细说明
+- `GORM_SQL日志集成说明.md` - GORM 日志集成
