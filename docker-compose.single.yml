@@ -1,0 +1,68 @@
+# 单应用镜像 + MySQL：无需单独起 Nginx/前端容器，也无需挂载本机 frontend/build
+#
+# 前置：与本文件同目录下需有 database_schema.sql（用于首次初始化 MySQL）
+#
+# 启动：
+#   docker compose -f docker-compose.single.yml up -d --build
+# 访问：http://localhost
+#
+# 仅使用已推送到镜像仓库的应用镜像（不 clone 源码构建）时，将下方 app.build 改为 app.image，并填你的仓库地址。
+
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: bms-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: bms_basic_db
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./database_schema.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - bms-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p123456"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.all-in-one
+    image: labequip-bms:app
+    container_name: bms-app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_HOST: mysql
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - bms-uploads:/root/uploads
+      - bms-logs:/root/logs
+    networks:
+      - bms-net
+
+volumes:
+  mysql-data:
+  bms-uploads:
+  bms-logs:
+
+networks:
+  bms-net:
+    driver: bridge

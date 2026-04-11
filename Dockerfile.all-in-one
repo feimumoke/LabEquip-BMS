@@ -1,0 +1,53 @@
+# 单镜像：Nginx（80）+ 静态前端 + Go API（本机 8080，不对外暴露）
+# 构建：docker build -f Dockerfile.all-in-one -t labequip-bms:app .
+# 运行需配合 MySQL，见 docker-compose.single.yml
+
+# --- 后端 ---
+FROM golang:1.21-alpine AS backend-builder
+WORKDIR /app
+ENV GO111MODULE=on \
+    GOPROXY=https://goproxy.cn,direct
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN cd server/api && go build -o /app/bms-api main.go
+
+# --- 前端静态资源 ---
+FROM node:20-alpine AS frontend-builder
+WORKDIR /app
+ENV NODE_OPTIONS=--openssl-legacy-provider
+RUN npm config set registry https://registry.npmmirror.com
+COPY frontend/package*.json ./
+RUN npm install
+COPY frontend/ ./
+RUN npm run build
+
+# --- 运行镜像 ---
+FROM alpine:3.19
+
+RUN apk add --no-cache ca-certificates tzdata nginx netcat-openbsd
+
+ENV TZ=Asia/Shanghai
+
+WORKDIR /root/
+
+COPY --from=backend-builder /app/bms-api .
+COPY --from=backend-builder /app/server/_config ./server/_config
+# 与 docker-compose 中的 MySQL 服务名一致（默认 mysql）
+RUN sed -i 's/127.0.0.1/mysql/g' server/_config/conf.yaml
+
+COPY --from=frontend-builder /app/build /usr/share/nginx/html
+
+# Alpine 自带 nginx 使用 http.d 存放站点配置
+COPY docker/nginx-app.conf /etc/nginx/http.d/default.conf
+
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+RUN mkdir -p /root/uploads /root/logs && chmod 755 /root/uploads /root/logs
+
+RUN nginx -t
+
+EXPOSE 80
+
+ENTRYPOINT ["/entrypoint.sh"]

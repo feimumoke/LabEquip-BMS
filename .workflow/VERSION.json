@@ -1,0 +1,8 @@
+{
+  "version": "1.4.0",
+  "files": {
+    ".workflow/scripts/calc_incremental_coverage.py": "1.3.2",
+    ".workflow/scripts/scan_tests.py": "3.0.0",
+    ".workflow/scripts/README.md": "1.1.0"
+  }
+}
