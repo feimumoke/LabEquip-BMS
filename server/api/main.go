@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
@@ -21,8 +22,8 @@ func main() {
 	path, _ := os.Getwd()
 	fmt.Println("Working directory:", path)
 
-	configPath := fmt.Sprintf("%s/server/_config/conf.yaml", path)
-	jsonPath := fmt.Sprintf("%s/server/_config/", path)
+	configPath := filepath.Join(path, "server", "_config", "conf.yaml")
+	jsonPath := filepath.Join(path, "server", "_config") + string(filepath.Separator)
 	fmt.Println("Config path:", configPath)
 
 	// 加载配置文件
