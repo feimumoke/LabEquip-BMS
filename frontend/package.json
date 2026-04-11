@@ -14,9 +14,9 @@
     "mobx-react-lite": "^3.4.0"
   },
   "scripts": {
-    "start": "HOST=www.equipbms.com react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider HOST=www.equipbms.com react-scripts start",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
+    "test": "NODE_OPTIONS=--openssl-legacy-provider react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
