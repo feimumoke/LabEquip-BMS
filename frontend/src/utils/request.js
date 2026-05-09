@@ -53,8 +53,14 @@ request.interceptors.response.use(
       message.error(errorMsg, 3); // 显示3秒
       
       // 特殊错误码处理
-      // 401: Token 过期或未授权
-      if (res.retcode === 401 || res.retcode === 10001) {
+      // 鉴权失败：后端多为 HTTP 200 + retcode=-1 + message 以 unauthorized: 开头（见 framework/web/handler.go）
+      const msg = String(errorMsg || '');
+      const isUnauthorized =
+        res.retcode === 401 ||
+        res.retcode === 10001 ||
+        res.retcode === -100401 ||
+        msg.startsWith('unauthorized:');
+      if (isUnauthorized) {
         localStorage.removeItem('token');
         localStorage.removeItem('userEmail');
         localStorage.removeItem('userInfo');
